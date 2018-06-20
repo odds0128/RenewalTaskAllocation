@@ -10,7 +10,7 @@ import java.util.List;
 import static constants.EnvironmentalConstants.AGENT_NUM;
 
 public class Manager {
-    private static List<Agent> agents;
+    private static List<Agent> _agents_;
 
     public static void main (String args[]){
         try{
@@ -22,7 +22,7 @@ public class Manager {
                 // シードの設定
                 myRandom.setRand(Long.parseLong(line));
                 //TODO: 環境の初期化 = エージェントとタスクキューの生成
-                agents = AgentManager.initiateAgents(AGENT_NUM);
+                _agents_ = AgentManager.initiateAgents(AGENT_NUM);
 
             }
 
