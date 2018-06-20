@@ -7,27 +7,19 @@ import myUtil.myRandom;
 import static constants.EnvironmentalConstants.*;
 
 public class Agent {
-    private static int _agent_id;
+    private static int _agent_id_;
 
     int id;
-    int x, y;
+    Position position;
     Roles role;
     int[] resources;
 
 
-    public Agent(int x, int y) {
-        this.id = _agent_id++;
-        this.x = x;
-        this.y = y;
-        this.role = Roles.LEADER;
+    public Agent() {
+        this.id = _agent_id_++;
     }
 
-    public int getX(){
-        return this.x;
+    public void setPosition(Position position) {
+        this.position = position;
     }
-
-    public int getY(){
-        return this.y;
-    }
-
 }
