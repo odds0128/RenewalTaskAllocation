@@ -3,11 +3,15 @@ package constants;
 public class EnvironmentalConstants {
     private EnvironmentalConstants(){}
 
-    public static final int AGENT_NUM = 500;
+    public static final int AGENT_NUM  = 500;
+    public static final int LEADER_NUM = 100;
     public static final int MAX_X = 51;
     public static final int MAX_Y = 51;
     public static final int MAX_DELAY = 5;
 
+    public static final int RESOURCE_TYPES = 3;
+
+    // 各リソースの最大値と最小値
     public static final int AGENT_MAX_RESOURCE = 5;
     public static final int AGENT_MIN_RESOURCE = 0;
 

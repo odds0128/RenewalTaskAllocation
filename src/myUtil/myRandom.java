@@ -24,4 +24,5 @@ public class myRandom {
     public static boolean getRandomBoolean(){
         return _rand_.nextBoolean();
     }
+
 }

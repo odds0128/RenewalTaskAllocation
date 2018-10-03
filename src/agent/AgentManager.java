@@ -12,23 +12,41 @@ public class AgentManager {
     static int[][] _delays_ = new int[AGENT_NUM][AGENT_NUM]; // 添字のエージェント間の通信遅延
 
 
-    public static List<Agent> initiateAgents(int agent_num) {
+    /**
+     * 引数の数だけエージェントを生成し，
+     * 座標・遅延時間を設定し，
+     * 信頼エージェント・役割の初期値を入れる．
+     * @param agent_num
+     * @return
+     */
+    public static List<Agent> lInitiateAgents(int agent_num, int leader_num) {
         List<Agent> agents = lGenerateAgents(agent_num);
-        setPositions(agents);
-        setDelays(agents);
-        setReliableAgents(agents);
+        vSetUpPositions(agents);
+        vSetUpDelays(agents);
+        vSetUpReliableAgents(agents);
+        vSetUpRoles(agents, leader_num);
         return agents;
     }
 
-    private static List<Agent> lGenerateAgents(int agent_num) {
+    /**
+     * 引数の数だけエージェントを生成する
+     * @param _agent_num
+     * @return
+     */
+    private static List<Agent> lGenerateAgents(int _agent_num) {
         List<Agent> agentList = new ArrayList<>();
-        for (int i = 0; i < agent_num; i++) {
+        for (int i = 0; i < _agent_num; i++) {
             agentList.add(new Agent());
         }
         return agentList;
     }
 
-    private static void setPositions(List<Agent> agents) {
+
+    /**
+     * 場所が被らないように引数のエージェントに座標を設定する．
+     * @param agents
+     */
+    private static void vSetUpPositions(List<Agent> agents) {
         boolean[][] grid = new boolean[MAX_X][MAX_Y];  // 該当の格子点にエージェントがいたらtrue, いなければfalse
 
 
@@ -49,8 +67,13 @@ public class AgentManager {
     }
 
 
-    // TODO: エージェント間の距離の実装
-    private static void setDelays(List<Agent> agents) {
+    /**
+     * エージェント間の遅延時間を設定するメソッド．
+     * iからjへの通信とjからiへの通信は同じ時間がかかるという前提．
+     * なお，i == jの時は0が入っている．
+     * @param agents
+     */
+    private static void vSetUpDelays(List<Agent> agents) {
         int _size = agents.size();
         Agent from, to;
 
@@ -59,22 +82,24 @@ public class AgentManager {
             for (int iTo = iFrom + 1; iTo < _size; iTo++) {
                 to = agents.get(iTo);
                 // 自分から相手への通信と相手から自分への通信は同じ時間
-                 _delays_[iFrom][iTo] = calcDelay(from, to);
-                 _delays_[iTo][iFrom] = calcDelay(from, to);
+                 _delays_[iFrom][iTo] = iCalcDelay(from, to);
+                 _delays_[iTo][iFrom] = iCalcDelay(from, to);
             }
         }
     }
 
     /**
-     * calcDelayメソッド
      * エージェント間のマンハッタン距離を計算し，returnするメソッド
      * □□□
      * □■□
      * □□□
      * このように座標を拡張し，真ん中からの距離を計算，その最短距離をとることで
      * トーラス構造の距離関係を割り出す
+     * @param from
+     * @param to
+     * @return from - to 間の通信時間
      */
-    private static int calcDelay(Agent from, Agent to) {
+    private static int iCalcDelay(Agent from, Agent to) {
         int _tillEnd = MAX_X / 2 + MAX_Y / 2;
         int _minDistance = Integer.MAX_VALUE;
         int _tilesX = 3;
@@ -98,9 +123,48 @@ public class AgentManager {
         return (int) Math.ceil((double) _minDistance / _tillEnd * MAX_DELAY);
     }
 
-    // TODO: 信頼エージェントの実装
-    private static void setReliableAgents(List<Agent> agents){
+
+    /**
+     * TODO: 役割の初期化
+     * _leader_numだけリーダーを設定する
+     * @param agents
+     * @param _leader_num
+     */
+    private static void vSetUpRoles(List<Agent> agents, int _leader_num){
+        List<Agent> leaders = new ArrayList<>();
+        Agent newLeader;
+        int  restAgents;
+
+
+        for( int i = 0; i < _leader_num; i++ ){
+        }
+    }
+
+    /**
+     * Agent型のリストを引数とし，そのディープコピーを返す関数
+     * @param agents
+     * @return
+     */
+    private static List<Agent> lCloneAgents(List<Agent> agents){
+        List clones = new ArrayList();
+
+        for( Agent original: agents ){
+            clones.add(original.clone());
+        }
+        return clones;
+    }
+
+
+    /**
+     * TODO: 誰を信頼するかは戦略によって違うのでStrategyの方で判断基準というか中身は実装するのが良いか
+     */
+    private static void vSetUpReliableAgents(List<Agent> agents){
 
     }
+
+    public static void vReset(){
+        int[][] _delays_ = null;
+    }
+
 
 }

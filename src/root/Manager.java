@@ -7,7 +7,7 @@ import myUtil.myRandom;
 import java.io.*;
 import java.util.List;
 
-import static constants.EnvironmentalConstants.AGENT_NUM;
+import static constants.EnvironmentalConstants.*;
 
 public class Manager {
     private static List<Agent> _agents_;
@@ -22,7 +22,7 @@ public class Manager {
                 // シードの設定
                 myRandom.setRand(Long.parseLong(line));
                 //TODO: 環境の初期化 = エージェントとタスクキューの生成
-                _agents_ = AgentManager.initiateAgents(AGENT_NUM);
+                _agents_ = AgentManager.lInitiateAgents(AGENT_NUM, LEADER_NUM);
 
             }
 
@@ -43,5 +43,9 @@ public class Manager {
         File        f = new File(path);
         FileReader fr = new FileReader(f);
         return new BufferedReader(fr);
+    }
+
+    public static void reset(){
+        _agents_ = null;
     }
 }
