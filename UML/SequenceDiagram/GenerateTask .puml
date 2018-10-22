@@ -1,0 +1,20 @@
+@startuml
+
+/'
+ Y : Task
+ Z : Subtask
+'/
+
+activate Y
+Y -> Y: Decide How Many Subtasks Included (n)
+
+loop for n
+    Y -> Z: Generate Subtask
+    activate Z
+    loop Until All Demand Resources are Set Positive
+        loop for RESOURCE_TYPES
+            Z -> Z: Set Demand Resource Randomly
+        end
+    end
+end
+@enduml

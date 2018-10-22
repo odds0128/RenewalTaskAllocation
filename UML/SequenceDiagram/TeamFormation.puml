@@ -1,0 +1,31 @@
+@startuml
+
+participant TaskManager
+activate "Agent(to be Leader)"
+activate "Agent(to be Member)"
+"Agent(to be Leader)" -> "Agent(to be Leader)": Select Role
+"Agent(to be Member)" -> "Agent(to be Member)": Select Role
+TaskManager <- "Agent(to be Leader)": Get Task
+"Agent(to be Leader)" -> "Agent(to be Leader)": Select Candidates
+"Agent(to be Leader)" -> "Agent(to be Member)": Solicitation Request
+"Agent(to be Member)" -> "Agent(to be Member)": Select a Leader
+"Agent(to be Member)" -> "Agent(to be Leader)": Solicitation Reply
+"Agent(to be Leader)" -> "Agent(to be Leader)": Renew DE \n& Select Participants
+alt Can Execute Whole Task
+    "Agent(to be Leader)" -->"Agent(to be Member)": Send Acceptance Message and Subtask
+    "Agent(to be Leader)" -->TaskManager: Finish Task
+
+    "Agent(to be Member)" -> "Agent(to be Member)": Renew DE
+    loop Until Finish Subtask
+        "Agent(to be Member)" -> "Agent(to be Member)": Execute Subtask
+    end
+else
+    "Agent(to be Leader)" -->"Agent(to be Member)": Send Dissolution Message
+    "Agent(to be Leader)" -->TaskManager: Dispose Task
+    "Agent(to be Member)" -> "Agent(to be Member)": Renew DE
+end
+
+deactivate "Agent(to be Leader)"
+deactivate "Agent(to be Member)"
+
+@enduml

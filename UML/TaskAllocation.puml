@@ -1,0 +1,127 @@
+@startuml
+/'
+各種マネージャはSingletonにする
+'/
+
+GeneralManager  -up-> ConstantManager
+GeneralManager ...> OutPutManager: <<call>>
+
+class ConstantManager{
+    ENVIRONMENTAL_CONSTANCE
+}
+
+class GeneralManager{
+    initiateAgents()
+    initiateTaskQueue()
+}
+
+class OutPutManager <<(S, #FF7700) Singleton>>{
+    +aggregateData()
+    +writeCSV()
+}
+
+package Agents {
+    AgentManager   -up-> OutPutManager
+    AgentManager ..> Agent : <<use>>
+    GeneralManager ..> AgentManager: <<call>>
+
+    class AgentManager <<(S, #FF7700) Singleton>>{
+        +agents: List<Agent>
+        -leaders: List<Agent>
+        -members: List<Agent>
+        -NEETs  : List<Agent>
+        +coordinates: int[][]
+        +initiateAgents(int AgentNum)
+        -generateAgents(int AgentNum)
+        -calculateDelay(int fromID, int toID)
+    }
+    class Agent{
+        +id:   int
+        +role: Role
+        -resources: List<Integer>
+        -strategy  : Strategy
+        -mailbox: List<Message>
+        -selectRole()
+        -sendMassage()
+        -inactivate()
+    }
+}
+
+/'
+ packageの単位でStrategyを実装していく
+'/
+package StrategyX{
+    Agent .down.> Role  : <<use>>
+    Leader -up-> Role
+    Member -up-> Role
+    interface Role {
+    }
+    class Leader{
+        -assignedTask: Task
+        -DE: double
+        -candidates: List<Agent>
+        -teamMembers: List<Agent>
+    }
+    class Member{
+        -assignedSubtask: Subtask
+        -DE: double
+        -leader: Agent
+    }
+}
+
+package Messages{
+    MessageManager -up-> OutPutManager
+    MessageManager -> AgentManager
+    AgentManager --> MessageManager
+
+    MessageManager ..>Message: <<use>>
+
+    class MessageManager <<(S, #FF7700) Singleton>>{
+        DeliveryQueue: HashMap<Message, int>
+        sendMessage(Message m, int untilDelivery):void
+        deliverMessage():void
+    }
+    class Message{
+        -subtask   : Subtask
+        -restDelay : int
+        -from: Agent
+        -to  : Agent
+    }
+}
+
+
+package Tasks{
+    TaskManager -up-> OutPutManager
+    GeneralManager ..> TaskManager: <<call>>
+    TaskManager  ..> Task  : <<use>>
+    AgentManager -> TaskManager
+
+    Task "1" *-- "1..*"Subtask
+    class TaskManager <<(S, #FF7700) Singleton>>{
+        -List<Task> TaskQueue
+        +generateTasks()
+        +assignTask()
+        /'
+          AgentManagerはここのdisposeTaskやfinishTaskを呼ぶが，
+          そのさらに中からOutPutManagerを読んで集計するようにする
+        '/
+        +disposeTask()
+        +finishTask()
+    }
+    class Task{
+        +id: int
+        +contents: List<Subtask>
+        ~generateSubtasks()
+    }
+
+    class Subtask{
+        +id: int
+        -requiredResourceType: int
+        -requiredResourceSize: int
+        +getReqResType(): int
+        +getReqResSize(): int
+    }
+}
+
+
+@enduml

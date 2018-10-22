@@ -1,0 +1,12 @@
+@startuml
+/'
+ Y : Agent
+ '/
+
+loop Until All Resources are Set Positive
+loop for RESOURCE_TYPES
+    Y -> Y: Set Resource Size Randomly
+end
+Y -> Y: Set The Other Parameters
+Y -> Y: Select Role Randomly
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+scale 350 width
+[*] --> RoleSelection
+
+state RoleSelection {
+  [*] --> Solicitation : role is leader
+}
+
+state Solicitation{
+    [*] -down-> SelectCandidates
+    SelectCandidates --> Reception : Candidates selected
+    SelectCandidates -> [*]  : Insufficient Candidates
+}
+
+state Reception{
+    [*] -down-> Waiting
+    Waiting -down-> TeamFormation: All replies reach
+    Waiting -> Waiting: All replies DON'T reach
+    TeamFormation -down-> Allocation: Whole task can be allocated
+    TeamFormation -right-> [*]: Task cannot executed
+    Allocation --> [*]
+}
+
+
+@enduml

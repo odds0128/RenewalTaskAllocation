@@ -1,0 +1,31 @@
+@startuml
+scale 350 width
+[*] --> RoleSelection
+
+state RoleSelection {
+  [*] -down-> SeekingLeader : role is member
+}
+
+state SeekingLeader{
+    [*] -down-> WaitingSolicitation
+    WaitingSolicitation --> SelectMyLeader      : Solicitation from (reliable) leader
+    WaitingSolicitation --> WaitingSolicitation : No solicitation reaches
+    SelectMyLeader --> WaitingResult
+}
+
+state WaitingResult{
+     [*] -down-> Waiting
+      Waiting -down-> Execution : Allocated Subtask
+      Waiting --> Waiting   : Result doesn't reaches
+      Waiting -left-> [*]       : Not Allocated
+}
+
+state Execution{
+    [*] --> Working
+    Working --> Working: Until done
+    Working --> [*] : Finished subtask
+
+}
+
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+/'
+ X = General Manager
+ Y = Task Manager
+ Z = Agent Manager
+ V = OutPut Manager
+'/
+
+participant X
+participant Y
+participant Z
+participant V
+
+X -> X: Initiate Some Points
+
+loop for each story
+    X -> Y: Invoke Initiation
+    ref over Y :Initiate Tasks
+    X -> Z: Invoke Initiation
+    ref over Z :Initiate Agents
+
+    loop for each turn
+        X -> Y: Add Tasks to Queue
+        X -> Z: Select Role
+        X -> Z: Form Team or Execute Task
+        ref over Z: Team Formation
+        opt
+           X -> V: Aggregate Some Parameters
+        end
+    end
+    X -> V: Aggregate Some Parameters
+end
+
+X -> V: Save the Result to xlsx File
+
+
+@enduml

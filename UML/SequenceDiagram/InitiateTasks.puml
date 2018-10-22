@@ -1,0 +1,13 @@
+@startuml
+/'
+ X : TaskManager
+ Y : Task
+ Z : Subtask
+'/
+
+
+loop for Initial Task Num
+    X -> Y: Generate Task
+    ref over Y, Z: Generate Task
+end
+@enduml

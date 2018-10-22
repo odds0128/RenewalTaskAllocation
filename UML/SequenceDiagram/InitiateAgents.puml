@@ -1,0 +1,19 @@
+@startuml
+/'
+ X : Agent Manager
+ Y : Agent
+ '/
+
+participant X
+participant Y
+
+loop for AGENT_NUM
+    X -> Y: Generate Agent
+    ref over Y: Generate Agent
+    X -> X: Set Agent on Grid
+    X -> Y: Set Agent (x,y) Coordinate
+end
+X -> X: Calculate Delays Among Agents
+
+
+@enduml
