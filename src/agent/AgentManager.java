@@ -4,34 +4,38 @@ package agent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static constants.EnvironmentalConstants.*;
 import static myUtil.myRandom.*;
-
+import static constants.EnvironmentalConstants.*;
 
 public class AgentManager {
-    static int[][] _delays_ = new int[AGENT_NUM][AGENT_NUM]; // 添字のエージェント間の通信遅延
+    private static AgentManager _singleton_ = new AgentManager();
+    private List<Agent>  agents_;    // リーダー→メンバー→役割なしの順番に入れる．
+    private int leader_num_;
+    private int member_num_;
+    private int[][] coordinates_;    // 入る値はエージェントのID．MAX_X × MAX_Y 座標の該当するいちに誰がいるか．
+    private int[][] delays_;         // 添字はエージェントのID．入る値は添字のエージェント間の通信所要時間．
+
+    private AgentManager(){
+        System.out.println("AgentManager generated.");
+    }
+
+
 
 
     /**
      * 引数の数だけエージェントを生成し，
      * 座標・遅延時間を設定し，
      * 信頼エージェント・役割の初期値を入れる．
-     * @param agent_num
-     * @return
      */
-    public static List<Agent> lInitiateAgents(int agent_num, int leader_num) {
-        List<Agent> agents = lGenerateAgents(agent_num);
-        vSetUpPositions(agents);
-        vSetUpDelays(agents);
-        vSetUpReliableAgents(agents);
-        vSetUpRoles(agents, leader_num);
-        return agents;
+    public void vInitiateAgents(int agent_num, int leader_num) {
+        agents_ = lGenerateAgents(agent_num);
+        vSetUpPositions(agents_);
+        vSetUpDelays(agents_);
+
     }
 
     /**
      * 引数の数だけエージェントを生成する
-     * @param _agent_num
-     * @return
      */
     private static List<Agent> lGenerateAgents(int _agent_num) {
         List<Agent> agentList = new ArrayList<>();
@@ -43,8 +47,28 @@ public class AgentManager {
 
 
     /**
+     * Agentのインスタンス生成時に呼び出される．
+     * 全リソースが0にならないようにリソースを設定する
+     */
+    private int[] setResources(){
+        int[] tempResources = new int[RESOURCE_TYPES];
+        int resSize = 0;
+
+        int temp ;
+        while( true ){
+            for( int i = 0; i < RESOURCE_TYPES; i++ ){
+                temp = getRandomInt(AGENT_MIN_RESOURCE, AGENT_MAX_RESOURCE);
+                resSize          += temp;
+                tempResources[i] =  temp;
+            }
+            if( resSize != 0 ) return tempResources;
+            resSize = 0;
+        }
+    }
+
+
+    /**
      * 場所が被らないように引数のエージェントに座標を設定する．
-     * @param agents
      */
     private static void vSetUpPositions(List<Agent> agents) {
         boolean[][] grid = new boolean[MAX_X][MAX_Y];  // 該当の格子点にエージェントがいたらtrue, いなければfalse
@@ -62,7 +86,6 @@ public class AgentManager {
                     break;
                 }
             }
-            ag.setPosition(new Position(x, y));
         }
     }
 
@@ -71,9 +94,8 @@ public class AgentManager {
      * エージェント間の遅延時間を設定するメソッド．
      * iからjへの通信とjからiへの通信は同じ時間がかかるという前提．
      * なお，i == jの時は0が入っている．
-     * @param agents
      */
-    private static void vSetUpDelays(List<Agent> agents) {
+    private void vSetUpDelays(List<Agent> agents) {
         int _size = agents.size();
         Agent from, to;
 
@@ -82,8 +104,8 @@ public class AgentManager {
             for (int iTo = iFrom + 1; iTo < _size; iTo++) {
                 to = agents.get(iTo);
                 // 自分から相手への通信と相手から自分への通信は同じ時間
-                 _delays_[iFrom][iTo] = iCalcDelay(from, to);
-                 _delays_[iTo][iFrom] = iCalcDelay(from, to);
+                 delays_[iFrom][iTo] = iCalcDelay(from, to);
+                 delays_[iTo][iFrom] = iCalcDelay(from, to);
             }
         }
     }
@@ -95,8 +117,6 @@ public class AgentManager {
      * □□□
      * このように座標を拡張し，真ん中からの距離を計算，その最短距離をとることで
      * トーラス構造の距離関係を割り出す
-     * @param from
-     * @param to
      * @return from - to 間の通信時間
      */
     private static int iCalcDelay(Agent from, Agent to) {
@@ -105,7 +125,7 @@ public class AgentManager {
         int _tilesX = 3;
         int _tilesY = 3;
 
-        int fromX = from.position.x;
+        int fromX = coodinates;
         int fromY = from.position.y;
 
         for (int i = 0; i < _tilesX; i++) {
@@ -127,8 +147,6 @@ public class AgentManager {
     /**
      * TODO: 役割の初期化
      * _leader_numだけリーダーを設定する
-     * @param agents
-     * @param _leader_num
      */
     private static void vSetUpRoles(List<Agent> agents, int _leader_num){
         List<Agent> leaders = new ArrayList<>();
@@ -142,11 +160,9 @@ public class AgentManager {
 
     /**
      * Agent型のリストを引数とし，そのディープコピーを返す関数
-     * @param agents
-     * @return
      */
     private static List<Agent> lCloneAgents(List<Agent> agents){
-        List clones = new ArrayList();
+        List<Agent> clones = new ArrayList<Agent>();
 
         for( Agent original: agents ){
             clones.add(original.clone());
@@ -155,16 +171,12 @@ public class AgentManager {
     }
 
 
-    /**
-     * TODO: 誰を信頼するかは戦略によって違うのでStrategyの方で判断基準というか中身は実装するのが良いか
-     */
-    private static void vSetUpReliableAgents(List<Agent> agents){
-
+    public static AgentManager getInstance(){
+        return _singleton_;
     }
 
     public static void vReset(){
-        int[][] _delays_ = null;
-    }
 
+    }
 
 }

@@ -1,7 +1,8 @@
 package root;
 
-import agent.Agent;
+import task.TaskManager;
 import agent.AgentManager;
+
 import myUtil.myRandom;
 
 import java.io.*;
@@ -9,8 +10,7 @@ import java.util.List;
 
 import static constants.EnvironmentalConstants.*;
 
-public class Manager {
-    private static List<Agent> _agents_;
+public class GeneralManager {
 
     public static void main (String args[]){
         try{
@@ -22,8 +22,8 @@ public class Manager {
                 // シードの設定
                 myRandom.setRand(Long.parseLong(line));
                 //TODO: 環境の初期化 = エージェントとタスクキューの生成
-                _agents_ = AgentManager.lInitiateAgents(AGENT_NUM, LEADER_NUM);
-
+                AgentManager.vInitiateAgents(AGENT_NUM, LEADER_NUM);
+                TaskManager.vInitiateTaskQueue();
             }
 
 
@@ -46,6 +46,7 @@ public class Manager {
     }
 
     public static void reset(){
-        _agents_ = null;
+        AgentManager.vReset();
+        TaskManager.vReset();
     }
 }

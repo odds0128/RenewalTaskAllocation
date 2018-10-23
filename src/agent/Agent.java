@@ -20,31 +20,6 @@ public class Agent implements Cloneable{
         this.resources = setResources();
     }
 
-    protected void setPosition(Position position) {
-        this.position = position;
-    }
-
-
-    /**
-     * Agentのインスタンス生成時に呼び出される．
-     * 全リソースが0にならないようにリソースを設定する
-     */
-    private int[] setResources(){
-        int[] tempResources = new int[RESOURCE_TYPES];
-        int resSize = 0;
-
-        int temp ;
-        while( true ){
-            for( int i = 0; i < RESOURCE_TYPES; i++ ){
-                temp = myRandom.getRandomInt(AGENT_MIN_RESOURCE, AGENT_MAX_RESOURCE);
-                resSize          += temp;
-                tempResources[i] =  temp;
-            }
-            if( resSize != 0 ) return tempResources;
-            resSize = 0;
-        }
-    }
-
 
     public static void reset(){
         _agent_id_ = 0;

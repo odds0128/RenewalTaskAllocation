@@ -8,14 +8,14 @@ import java.io.BufferedReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-class ManagerTest {
-    Manager manager;
+class GeneralManagerTest {
+    GeneralManager generalManager;
     Method  rtf;
 
     @BeforeEach
     public void setUp() throws NoSuchMethodException {
-        manager = new Manager();
-        rtf = Manager.class.getDeclaredMethod("readTextFile", String.class);
+        generalManager = new GeneralManager();
+        rtf = GeneralManager.class.getDeclaredMethod("readTextFile", String.class);
         rtf.setAccessible(true);
     }
 
@@ -26,7 +26,7 @@ class ManagerTest {
         String currentDirectory = System.getProperty("user.dir");
         String textFilePath = currentDirectory + "/src/root/RandomSeed.txt";
 
-        BufferedReader actual = (BufferedReader) rtf.invoke(manager, textFilePath);
+        BufferedReader actual = (BufferedReader) rtf.invoke(generalManager, textFilePath);
     }
 
 
