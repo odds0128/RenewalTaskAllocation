@@ -14,12 +14,13 @@
 　→　TaskManagerを経由してOutPutManagerに渡す方針にする．あくまで，出力する予定のパラメータは可能な限りOutPutManagerに管理させる
 
 ・LeaderクラスとMemberクラスを用意し，役割に依存するパラメータはそこに持たせる．
+　→　持たせられない．Leader, Memberには動きだけ記述して逐次値は渡す．
 
 ・相互のやり取りはパッケージ内のことであろうと全部Managerを通して行う
 
 ・Deliveryクラス要らんやんHashMapでええわ
 
-・StrategyX.java内にLeaderクラスとMemberクラスの両方押し込むか，
+・Strategies.strategyX.java内にLeaderクラスとMemberクラスの両方押し込むか，
 　それともStrategyパッケージ内にLeaderクラスとMemberクラスを作るか?
 　なんにせよStrategyによって各Roleの動きは変わるので，Strategyの内部にRoleを置くのが賢そう．
 　後者はあまり好まれないやり方なので前者か...?
@@ -31,3 +32,6 @@
 ・リーダーやメンバエージェントのリストは設けず，全エージェントのリストだけ用意する．
 　ただしその格納の順番をリーダー→メンバ→役割なしとし，各役割のエージェント数を数えることでインデックスを参照するときに一工夫してアクセスする．
 ・IDから座標への逆引きがやっぱ必要?
+　→　座標の情報をエージェントに持たせることに
+
+・ManagerとAgentやTaskなどの初期化処理はクラスを分けよう

@@ -1,4 +1,4 @@
-package myUtil;
+package root;
 
 import java.util.Random;
 
@@ -13,6 +13,9 @@ public class myRandom {
         _rand_ = new Random(seed);
     }
 
+    /**
+     * min以上max"以下"の乱数を発生する
+     */
     public static int getRandomInt(int min, int max){
         return min + _rand_.nextInt(max - min + 1);
     }
