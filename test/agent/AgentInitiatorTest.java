@@ -53,7 +53,6 @@ class AgentInitiatorTest {
                     actual += ag.resources[i];
 
                 }
-                System.out.println("resources: " + ag);
                 assertThat(actual, is(greaterThanOrEqualTo(_min)));
                 assertThat(actual, is(lessThanOrEqualTo(_max)));
             }
