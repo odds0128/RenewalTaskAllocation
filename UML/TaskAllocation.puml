@@ -24,20 +24,23 @@ package Agents {
     AgentManager   -up-> OutPutManager
     AgentManager ..> Agent : <<use>>
     GeneralManager ..> AgentManager: <<call>>
+    Leader -up-> Role
+    Member -up-> Role
+    Agent ..> Role
 
     class AgentManager <<(S, #FF7700) Singleton>>{
         +agents: List<Agent>
-        -leaders: List<Agent>
-        -members: List<Agent>
-        -NEETs  : List<Agent>
-        +coordinates: int[][]
+        -leaderNum: int
+        -memberNum: int
+        +coordinates: HashMap
         +initiateAgents(int AgentNum)
         -generateAgents(int AgentNum)
         -calculateDelay(int fromID, int toID)
     }
     class Agent{
         +id:   int
-        +role: Role
+        +roleType: enum
+        -roleElements: Role[]
         -resources: List<Integer>
         -strategy  : Strategy
         -mailbox: List<Message>
@@ -45,28 +48,62 @@ package Agents {
         -sendMassage()
         -inactivate()
     }
+    interface Role{
+        e_leader: double
+        e_member: double
+    }
+    class Leader{
+        candidates: List<Agent>
+        colleagues: List<Agent>
+        assignedTask: Task
+        DE_leader:  double[]
+    }
+    class Member{
+        leader: Agent
+        assignedSubtask: Subtask
+        DE_member: double[]
+    }
+
+    enum RoleName{
+        Leader
+        Member
+    }
+
+    enum LeaderPhase{
+        act1
+        act2
+    }
+
+    enum MemberPhase{
+        act1
+        act2
+        act3
+    }
+
 }
 
 /'
  packageの単位でStrategyを実装していく
 '/
-package StrategyX{
-    Agent .down.> Role  : <<use>>
-    Leader -up-> Role
-    Member -up-> Role
-    interface Role {
+package Strategies.strategyX{
+    AgentManager .down.> Strategy  : <<use>>
+    StrategyX_Leader -up-> Strategy
+    StrategyX_Member -up-> Strategy
+    interface Strategy {
     }
-    class Leader{
-        -assignedTask: Task
-        -DE: double
-        -candidates: List<Agent>
-        -teamMembers: List<Agent>
+    class StrategyX_Leader{
+        act1()
+        act2()
     }
-    class Member{
-        -assignedSubtask: Subtask
-        -DE: double
-        -leader: Agent
+    class StrategyX_Member{
+        act1()
+        act2()
+        act3()
     }
+    enum StrategyName{
+            StrategyX
+            StrategyY
+        }
 }
 
 package Messages{
