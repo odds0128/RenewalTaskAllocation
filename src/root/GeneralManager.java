@@ -20,7 +20,7 @@ public class GeneralManager {
                 myRandom.setRand(Long.parseLong(line));
                 //TODO: 環境の初期化 = エージェントとタスクキューの生成
                 AgentManager.getInstance().vInitiateAgents(AGENT_NUM, INITIAL_LEADER_NUM);
-                TaskManager.vInitiateTaskQueue();
+                TaskManager.getInstance().vInitiateTaskQueue(INITIAL_TASK_NUM);
             }
 
 
