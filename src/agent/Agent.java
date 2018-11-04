@@ -5,7 +5,6 @@ import static root.myRandom.getRandomInt;
 import static agent.elements.LeaderElements.*;
 import static agent.elements.MemberElements.*;
 
-
 import agent.elements.*;
 import communication.Message;
 

@@ -9,6 +9,11 @@ import static root.EnvironmentalConstants.*;
 
 public class AgentManager {
     private static AgentManager _singleton_ = new AgentManager();
+    public static AgentManager getInstance(){
+        return _singleton_;
+    }
+
+
     private List<Agent>  agents_;    // リーダー→メンバー→役割なしの順番に入れる．
     private int leader_num_;
     private int member_num_;
@@ -39,11 +44,6 @@ public class AgentManager {
             clones.add(original.clone());
         }
         return clones;
-    }
-
-
-    public static AgentManager getInstance(){
-        return _singleton_;
     }
 
     public void vReset(){

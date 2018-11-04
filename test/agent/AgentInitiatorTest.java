@@ -1,13 +1,13 @@
 package agent;
 
 import org.junit.jupiter.api.Nested;
-import root.myRandom;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import root.myRandom;
 
 import static root.EnvironmentalConstants.*;
 import static org.hamcrest.CoreMatchers.is;
