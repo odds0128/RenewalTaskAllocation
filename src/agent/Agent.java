@@ -1,6 +1,8 @@
 package agent;
 
 import static root.EnvironmentalConstants.*;
+
+import static root.myRandom.getRandomBoolean;
 import static root.myRandom.getRandomInt;
 import static agent.elements.LeaderElements.*;
 import static agent.elements.MemberElements.*;
@@ -13,22 +15,18 @@ import java.util.List;
 public class Agent implements Cloneable{
     private static int _agent_id_ = 0;
 
-    int id;
-    RoleName roleName;
-    LeaderElements le;
-    MemberElements me;
-    int[] resources;
-    List<Message> mailbox;
+    public int id;
+    private RoleName roleName;
+    private LeaderElements le;
+    private MemberElements me;
+    private int[] resources;
+    private List<Message> mailbox;
 
 
     public Agent() {
         this.id = _agent_id_++;
         this.resources = setResources();
         this.roleName  = RoleName.member;
-    }
-
-    public static void reset(){
-        _agent_id_ = 0;
     }
 
     /**
@@ -51,6 +49,20 @@ public class Agent implements Cloneable{
         }
     }
 
+    void vSelectRole(){
+        if( this.me.getE_member() > this.le.getE_leader() ){
+            this.roleName = RoleName.member;
+        }else if( this.me.getE_member() < this.le.getE_leader() ){
+            this.roleName = RoleName.leader;
+        }else{
+            this.roleName = getRandomBoolean() ? RoleName.leader : RoleName.member;
+        }
+    }
+
+    public static void vResetAgent(){
+        _agent_id_ = 0;
+    }
+
     @Override
     public Agent clone() { //基本的にはpublic修飾子を付け、自分自身の型を返り値とする
         Agent b = null;
@@ -66,11 +78,15 @@ public class Agent implements Cloneable{
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("ag" + id);
+        sb.append("ag").append(id);
         for(int i = 0; i < RESOURCE_TYPES; i++){
-            sb.append(", " + "res" + i + ": " + resources[i]);
+            sb.append(", " + "res").append(i).append(": ").append(resources[i]);
         }
 
         return sb.toString();
+    }
+
+    public RoleName getRoleName() {
+        return roleName;
     }
 }
