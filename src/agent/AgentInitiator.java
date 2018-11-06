@@ -13,7 +13,6 @@ public class AgentInitiator {
         return _singleton_;
     }
 
-
     /**
      * 引数の数だけエージェントを生成する
      */
@@ -126,7 +125,7 @@ public class AgentInitiator {
         for( int i = 0; i < leader_num; i++ ){
             newLeaderIndex = getRandomInt(0, restAgentsNum - 1);
             newLeader = agents.remove(newLeaderIndex);
-            newLeader.roleName = RoleName.leader;
+            newLeader.setRoleName(RoleName.leader);
             newAgentsList.add(newLeader);
             restAgentsNum--;
         }

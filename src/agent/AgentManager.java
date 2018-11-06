@@ -23,7 +23,6 @@ public class AgentManager {
     private AgentManager(){
         coordinates_ = new HashMap<>();
         delays_      = new int[AGENT_NUM][AGENT_NUM];
-        System.out.println("AgentManager generated.");
     }
 
     public void vInitiateAgents(int agent_num, int leader_num){
@@ -32,6 +31,14 @@ public class AgentManager {
         delays_      = AgentInitiator.getInstance().aSetDelays(coordinates_, agents_);
     }
 
+    // FIXME: ROLEが固定かどうかは途中で変わることはないので毎ターン判断するようになっているのを直したい
+    public void act(){
+        if( DO_ROLE_CHANGES ) {
+            for( Agent ag: agents_ ){
+                ag.vSelectRole();
+            }
+        }
+    }
 
 
     /**
@@ -48,11 +55,6 @@ public class AgentManager {
 
     public void vReset(){
 
-    }
-
-//  TODO: テスト用にリストを返すメソッドを作るけどこれは後で消したい
-    public List<Agent> lGetAgents(){
-        return agents_;
     }
 
 }

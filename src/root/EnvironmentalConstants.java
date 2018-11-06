@@ -31,6 +31,8 @@ public interface EnvironmentalConstants {
     int INITIAL_TASK_NUM = 0;
     int INITIAL_LEADER_NUM = 100;
 
+    boolean DO_ROLE_CHANGES = true;
+
     enum PhasesLeader {
         act1,
         act2,

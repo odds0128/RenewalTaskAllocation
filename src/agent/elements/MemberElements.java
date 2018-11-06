@@ -15,7 +15,7 @@ public class MemberElements  {
     private List<Subtask> assignedSubtask;
     private Agent leader;
 
-    MemberElements(int agent_num){
+    public MemberElements(int agent_num){
         this.DE_m = new double[agent_num];
         this.assignedSubtask = new ArrayList<>();
 
