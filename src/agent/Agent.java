@@ -16,6 +16,7 @@ public class Agent implements Cloneable{
     private static int _agent_id_ = 0;
 
     public int id;
+
     private RoleName roleName;
     private LeaderElements le;
     private MemberElements me;
@@ -89,4 +90,8 @@ public class Agent implements Cloneable{
     public RoleName getRoleName() {
         return roleName;
     }
+    public void setRoleName(RoleName roleName) {
+        this.roleName = roleName;
+    }
+
 }

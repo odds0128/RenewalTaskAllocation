@@ -57,9 +57,4 @@ public class AgentManager {
 
     }
 
-//  TODO: テスト用にリストを返すメソッドを作るけどこれは後で消したい
-    public List<Agent> lGetAgents(){
-        return agents_;
-    }
-
 }

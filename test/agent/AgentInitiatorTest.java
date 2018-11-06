@@ -1,13 +1,15 @@
 package agent;
 
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.*;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import root.myRandom;
+
+import javax.management.relation.Role;
 
 import static root.EnvironmentalConstants.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -30,10 +32,18 @@ class AgentInitiatorTest {
     @Nested
     class エージェント生成のテスト {
         List<Agent> agents;
+        Field f, g;
 
         @BeforeEach
-        void setUp() {
+        void setUp() throws NoSuchFieldException {
+
             agents = ai.lGenerateAgents(_agentNum_, _leader_num);
+
+            f = agents.get(0).getClass().getDeclaredField("resources");
+            f.setAccessible(true);
+
+            g = agents.get(0).getClass().getDeclaredField("roleName");
+            g.setAccessible(true);
         }
 
         @Test
@@ -42,16 +52,17 @@ class AgentInitiatorTest {
         }
 
         @Test
-        void 各エージェントのリソースの総量は1十3xAGENT_MIN_RESOURCEから3xAGENT_MAX_RESOURCEの間である() {
+        void 各エージェントのリソースの総量は1十3xAGENT_MIN_RESOURCEから3xAGENT_MAX_RESOURCEの間である() throws NoSuchFieldException, IllegalAccessException {
             int actual;
             int _min = 1 + 3 * AGENT_MIN_RESOURCE;
             int _max = 3 * AGENT_MAX_RESOURCE;
 
-            for (Agent ag : agents) {
+            int[] temp;
+            for (int i = 0; i < _agentNum_; i++) {
                 actual = 0;
-                for (int i = 0; i < RESOURCE_TYPES; i++) {
-                    actual += ag.resources[i];
-
+                temp = (int[])f.get(agents.get(i));
+                for (int j = 0; j < RESOURCE_TYPES; j++) {
+                    actual += temp[j];
                 }
                 assertThat(actual, is(greaterThanOrEqualTo(_min)));
                 assertThat(actual, is(lessThanOrEqualTo(_max)));
@@ -59,12 +70,15 @@ class AgentInitiatorTest {
         }
 
         @Test
-        void リーダーが期待した数存在する() {
+        void リーダーが期待した数存在する() throws IllegalAccessException {
             List<Agent> agents = ai.lGenerateAgents(_agentNum_, _leader_num);
             int expected = _leader_num;
             int actual = 0;
+
+            RoleName temp;
             for (Agent ag : agents) {
-                if (ag.roleName.equals(RoleName.leader)) {
+                temp = (RoleName) g.get(ag);
+                if (temp.equals(RoleName.leader)) {
                     actual++;
                 }
             }
@@ -136,6 +150,6 @@ class AgentInitiatorTest {
     @AfterEach
     void tearDown() {
         ai.vReset();
-        Agent.reset();
+        Agent.vResetAgent();
     }
 }
