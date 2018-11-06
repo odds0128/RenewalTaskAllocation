@@ -28,6 +28,8 @@ public class Agent implements Cloneable{
         this.id = _agent_id_++;
         this.resources = setResources();
         this.roleName  = RoleName.member;
+        this.le = new LeaderElements(AGENT_NUM);
+        this.me = new MemberElements(AGENT_NUM);
     }
 
     /**

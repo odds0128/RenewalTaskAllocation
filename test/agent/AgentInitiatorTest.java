@@ -51,23 +51,6 @@ class AgentInitiatorTest {
             assertThat(agents.size(), is(_agentNum_));
         }
 
-        @Test
-        void 各エージェントのリソースの総量は1十3xAGENT_MIN_RESOURCEから3xAGENT_MAX_RESOURCEの間である() throws NoSuchFieldException, IllegalAccessException {
-            int actual;
-            int _min = 1 + 3 * AGENT_MIN_RESOURCE;
-            int _max = 3 * AGENT_MAX_RESOURCE;
-
-            int[] temp;
-            for (int i = 0; i < _agentNum_; i++) {
-                actual = 0;
-                temp = (int[])f.get(agents.get(i));
-                for (int j = 0; j < RESOURCE_TYPES; j++) {
-                    actual += temp[j];
-                }
-                assertThat(actual, is(greaterThanOrEqualTo(_min)));
-                assertThat(actual, is(lessThanOrEqualTo(_max)));
-            }
-        }
 
         @Test
         void リーダーが期待した数存在する() throws IllegalAccessException {

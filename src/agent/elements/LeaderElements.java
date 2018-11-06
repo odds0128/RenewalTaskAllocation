@@ -17,7 +17,7 @@ public class LeaderElements {
     private List<Agent> candidates;
     private List<Agent> teammates;
 
-    LeaderElements(int agent_num){
+    public LeaderElements(int agent_num){
         this.DE_l = new double[agent_num];
         this.candidates = new ArrayList<>();
         this.teammates  = new ArrayList<>();
