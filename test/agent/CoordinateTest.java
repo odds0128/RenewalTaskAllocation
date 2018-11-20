@@ -2,6 +2,7 @@ package agent;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 // 座標が範囲外かどうかはCoordinateクラスは知らないのでチェックしなくていい．
 // それはAgentManagerおよびAgentManagerTestの仕事
+@Tag("all")
 class CoordinateTest {
     @Nested class 座標52_3が取得できるか {
         Coordinate Coordinate;

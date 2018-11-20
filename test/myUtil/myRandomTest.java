@@ -1,5 +1,6 @@
 package myUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import root.myRandom;
 
@@ -8,6 +9,7 @@ import java.util.Random;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+@Tag("all")
 class myRandomTest {
     @BeforeEach
     void setUp(){

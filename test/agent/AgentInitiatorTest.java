@@ -1,22 +1,18 @@
 package agent;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import root.myRandom;
-
-import javax.management.relation.Role;
 
 import static root.EnvironmentalConstants.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-
+@Tag("all")
 class AgentInitiatorTest {
 
     private static int _agentNum_ = AGENT_NUM;
