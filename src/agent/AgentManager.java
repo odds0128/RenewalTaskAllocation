@@ -1,7 +1,9 @@
 package agent;
 
-import Strategies.Strategy;
+import Strategies.StrategyBase;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +17,8 @@ public class AgentManager {
     }
 
 
-    private Strategy strategyLeader;
-    private Strategy strategyMember;
+    private StrategyBase strategyLeader;
+    private StrategyBase strategyMember;
     private List<Agent>  agents_;    // リーダー→メンバー→役割なしの順番に入れる．
     private int leader_num_ = 0;
     private int member_num_ = 0;
@@ -109,8 +111,26 @@ public class AgentManager {
         return leader_num_;
     }
 
-    public void setStrategy(StrategyName strategy) {
-        String strategyName = (String) strategy;
-        this.strategyLeader = ;
+    public void vSetStrategy(String strategy)  {
+        Class  cll, clm;
+        Method ml, mm;
+
+        String packageName = "Strategies.StrategyX.";
+        String methodName  = "getInstance";
+
+        try {
+            cll = Class.forName(packageName + strategy + "_Leader");
+            ml  = cll.getMethod(methodName);
+            this.strategyLeader = (StrategyBase) ml.invoke(cll.newInstance());
+
+            clm = Class.forName(packageName + strategy + "_Member");
+            mm  = clm.getMethod(methodName);
+            this.strategyMember = (StrategyBase) mm.invoke(clm.newInstance());
+        } catch (ClassNotFoundException | NoSuchMethodException
+                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 }

@@ -1,5 +1,8 @@
 package agent;
 
+import Strategies.StrategyBase;
+import Strategies.StrategyX.StrategyX_Leader;
+import Strategies.StrategyX.StrategyX_Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,7 +23,6 @@ import static root.EnvironmentalConstants.*;
 class AgentManagerTest {
     private AgentManager am = AgentManager.getInstance();
     private List agents = new ArrayList<>();
-
 
 
     @BeforeEach
@@ -69,16 +71,39 @@ class AgentManagerTest {
         int changes = 0;                            // Listを頭から見ていった時，leaderからmemberに切り替わるのは一度だけ
         RoleName former = RoleName.leader;
 
-        for( Agent ag: rearrangedAgents ){
-            if( ag. getRoleName() != former ){
+        for (Agent ag : rearrangedAgents) {
+            if (ag.getRoleName() != former) {
                 changes++;
             }
-            if( ag.getRoleName() == RoleName.leader ){
+            if (ag.getRoleName() == RoleName.leader) {
                 actual++;
             }
             former = ag.getRoleName();
         }
         assertThat(actual, is(expected));
         assertThat(changes, is(1));
+    }
+
+    @Test
+    void vSetStrategyでLeaderとMemberのStrategyが設定される() throws NoSuchFieldException, IllegalAccessException {
+        String testStrategyName = "StrategyX";
+
+        StrategyBase expected_l = StrategyX_Leader.getInstance();
+        StrategyBase expected_m = StrategyX_Member.getInstance();
+
+        am.vSetStrategy(testStrategyName);
+
+        StrategyBase actual_l, actual_m;
+
+        Field fl = am.getClass().getDeclaredField("strategyLeader");
+        fl.setAccessible(true);
+        actual_l = (StrategyBase) fl.get(am);
+
+        Field fm = am.getClass().getDeclaredField("strategyMember");
+        fm.setAccessible(true);
+        actual_m = (StrategyBase) fm.get(am);
+
+        assertThat(actual_l, is(expected_l));
+        assertThat(actual_m, is(expected_m));
     }
 }
