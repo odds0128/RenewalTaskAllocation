@@ -1,6 +1,5 @@
 package root;
 
-import Strategies.Strategy;
 import task.TaskManager;
 import agent.AgentManager;
 
@@ -13,9 +12,10 @@ import static root.EnvironmentalConstants.*;
 public class GeneralManager {
 
     public static void main (String args[]){
-        List<StrategyName> strategy = new ArrayList<>();
+        List<String> strategy = new ArrayList<>();
 
-        strategy.add(StrategyName.StrategyX);
+        // TODO: Strategyの指定をもっとスマートにしたい
+        strategy.add("StrategyX");
 
         try{
             String currentDirectory = System.getProperty("user.dir");
@@ -29,7 +29,7 @@ public class GeneralManager {
                 // シードの設定
                 myRandom.setRand(Long.parseLong(line));
                 // 環境の初期化 = Strategyのセット．エージェントとタスクキューの生成
-                AgentManager.getInstance().setStrategy(StrategyName.StrategyX);
+                AgentManager.getInstance().vSetStrategy("StrategyX");
                 AgentManager.getInstance().vInitiateAgents(AGENT_NUM, INITIAL_LEADER_NUM);
                 TaskManager.getInstance().vInitiateTaskQueue(INITIAL_TASK_NUM);
 
