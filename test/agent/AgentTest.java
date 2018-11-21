@@ -1,6 +1,7 @@
 package agent;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -15,6 +16,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static root.EnvironmentalConstants.*;
 
+@Tag("all")
 class AgentTest {
     private int _agentNum_ = AGENT_NUM;
     private List<Agent> agents;
@@ -51,7 +53,7 @@ class AgentTest {
     }
 
     @Test
-    void 全エージェントにおいてe_leaderとe_memberが同じ時vSelectRoleでリーダーとメンバが概ね半々になる(){
+    void vSelectRoleでリーダーとメンバが概ね半々になる(){
         double actual = 0;                       // leaderの数を数える
         double expected = _agentNum_/2.0;
         double CI_range = 1.96*sqrt(expected/2); // 95%信頼区間の幅

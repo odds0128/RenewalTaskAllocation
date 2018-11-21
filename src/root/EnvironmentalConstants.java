@@ -1,6 +1,9 @@
 package root;
 
 public interface EnvironmentalConstants {
+    int EXPERIMENTAL_TIMES = 10;
+    int MAX_TURN = 50000;
+
     int AGENT_NUM = 500;
     int MAX_X = 51;
     int MAX_Y = 51;
@@ -48,9 +51,4 @@ public interface EnvironmentalConstants {
         act2,
         act3,
     }
-
-    enum StrategyName {
-        StrategyX,
-    }
-
 }
