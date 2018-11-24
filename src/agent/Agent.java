@@ -1,16 +1,14 @@
 package agent;
 
-import static root.EnvironmentalConstants.*;
-
-import static root.myRandom.getRandomBoolean;
-import static root.myRandom.getRandomInt;
-import static agent.elements.LeaderElements.*;
-import static agent.elements.MemberElements.*;
-
-import agent.elements.*;
+import agent.elements.LeaderElements;
+import agent.elements.MemberElements;
 import communication.Message;
 
 import java.util.List;
+
+import static root.EnvironmentalConstants.*;
+import static root.myRandom.getRandomBoolean;
+import static root.myRandom.getRandomInt;
 
 public class Agent implements Cloneable{
     private static int _agent_id_ = 0;
@@ -60,6 +58,14 @@ public class Agent implements Cloneable{
         }else{
             this.roleName = getRandomBoolean() ? RoleName.leader : RoleName.member;
         }
+    }
+
+    public LeaderElements getLeaderElements(){
+        return this.le;
+    }
+
+    public MemberElements getMemberElements(){
+        return this.me;
     }
 
     public static void vResetAgent(){

@@ -10,12 +10,14 @@ import java.util.List;
 
 import static root.EnvironmentalConstants.*;
 
+/**
+ *
+ */
 public class AgentManager {
     private static AgentManager _singleton_ = new AgentManager();
     public static AgentManager getInstance(){
         return _singleton_;
     }
-
 
     private StrategyBase strategyLeader;
     private StrategyBase strategyMember;
@@ -38,13 +40,23 @@ public class AgentManager {
         delays_      = AgentInitiator.getInstance().aSetDelays(coordinates_, agents_);
     }
 
-    // FIXME: ROLEが固定かどうかは途中で変わることはないので毎ターン判断するようになっているのを直したい
     public void act(){
-        if( DO_ROLE_CHANGES ) {
+        // FIXME: ROLEが固定かどうかは途中で変わることはないので毎ターン判断するようになっているのを直したい
+        if( DO_ROLE_CHANGES ) { // ここで役割の選択とagents_の並び替えを行う
             agents_ = lRearrangeList(agents_);
         }
-        for( Agent ag: agents_ ){
-
+        //VERIFY: 先頭からpopして終わったらpushするように順繰りにやるのとどっちが早い?
+        // まずリーダーの行動
+        Agent leader;
+        for( int i = 0; i < leader_num_; i++ ){
+            leader = agents_.get(i);
+            strategyLeader.act(leader);
+        }
+        // メンバの行動
+        Agent member;
+        for( int i = leader_num_; i < AGENT_NUM; i++ ){
+            member = agents_.get(i);
+            strategyLeader.act(member);
         }
     }
 
@@ -121,15 +133,14 @@ public class AgentManager {
         try {
             cll = Class.forName(packageName + strategy + "_Leader");
             ml  = cll.getMethod(methodName);
-            this.strategyLeader = (StrategyBase) ml.invoke(cll.newInstance());
-
+            this.strategyLeader = (StrategyBase) ml.invoke(cll);
             clm = Class.forName(packageName + strategy + "_Member");
             mm  = clm.getMethod(methodName);
-            this.strategyMember = (StrategyBase) mm.invoke(clm.newInstance());
+            this.strategyMember = (StrategyBase) mm.invoke(clm);
         } catch (ClassNotFoundException | NoSuchMethodException
-                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                | IllegalAccessException | InvocationTargetException e) {
 
-            e.printStackTrace();
+            System.out.println("No such strategy");
             System.exit(1);
         }
     }
