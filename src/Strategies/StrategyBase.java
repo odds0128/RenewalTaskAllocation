@@ -1,9 +1,7 @@
 package Strategies;
 
-public abstract class StrategyBase {
-    private static StrategyBase _singleton_;
+import agent.Agent;
 
-    public static StrategyBase getInstance(){
-        return _singleton_;
-    }
+public abstract class StrategyBase {
+    public abstract void act(Agent agent);
 }

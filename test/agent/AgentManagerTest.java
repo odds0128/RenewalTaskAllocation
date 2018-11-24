@@ -3,6 +3,8 @@ package agent;
 import Strategies.StrategyBase;
 import Strategies.StrategyX.StrategyX_Leader;
 import Strategies.StrategyX.StrategyX_Member;
+import org.junit.Rule;
+import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,11 +21,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static root.EnvironmentalConstants.*;
 
+
 @Tag("all")
 class AgentManagerTest {
     private AgentManager am = AgentManager.getInstance();
     private List agents = new ArrayList<>();
 
+    @Rule
+    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
 
     @BeforeEach
     void setUp() throws NoSuchFieldException, IllegalAccessException {
@@ -106,4 +111,5 @@ class AgentManagerTest {
         assertThat(actual_l, is(expected_l));
         assertThat(actual_m, is(expected_m));
     }
+
 }
