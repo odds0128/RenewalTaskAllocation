@@ -10,6 +10,7 @@ public interface EnvironmentalConstants {
     int MAX_DELAY = 5;
 
     int RESOURCE_TYPES = 3;
+    int MAX_TASKQUEUE_SIZE = 500;
 
 
     // 各リソースの最大値と最小値
