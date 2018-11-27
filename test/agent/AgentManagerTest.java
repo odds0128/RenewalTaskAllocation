@@ -24,7 +24,7 @@ import static root.EnvironmentalConstants.*;
 
 @Tag("all")
 class AgentManagerTest {
-    private AgentManager am = AgentManager.getInstance();
+    private AgentManager sut = AgentManager.getInstance();
     private List agents = new ArrayList<>();
 
     @Rule
@@ -34,12 +34,12 @@ class AgentManagerTest {
     void setUp() throws NoSuchFieldException, IllegalAccessException {
         Field f;
 
-        am.vInitiateAgents(AGENT_NUM, INITIAL_LEADER_NUM);
+        sut.vInitiateAgents(AGENT_NUM, INITIAL_LEADER_NUM);
 
-        f = am.getClass().getDeclaredField("agents_");
+        f = sut.getClass().getDeclaredField("agents_");
         f.setAccessible(true);
 
-        agents = (List) f.get(am);
+        agents = (List) f.get(sut);
     }
 
     /**
@@ -53,7 +53,7 @@ class AgentManagerTest {
         methodClone.setAccessible(true);
 
         List originals = agents;
-        List clones = (List) methodClone.invoke(am, originals);
+        List clones = (List) methodClone.invoke(sut, originals);
 
 //        for( int i = 0; i < originals.size(); i++ ){
 //            System.out.println("Original: " + originals.get(i) + ", " + "Clone: " + clones.get(i));
@@ -69,10 +69,10 @@ class AgentManagerTest {
 
         methodRearrange = AgentManager.class.getDeclaredMethod("lRearrangeList", List.class);
         methodRearrange.setAccessible(true);
-        rearrangedAgents = (List<Agent>) methodRearrange.invoke(am, agents);
+        rearrangedAgents = (List<Agent>) methodRearrange.invoke(sut, agents);
 
         int actual = 0;
-        int expected = am.getLeader_num_();
+        int expected = sut.getLeader_num_();
         int changes = 0;                            // Listを頭から見ていった時，leaderからmemberに切り替わるのは一度だけ
         RoleName former = RoleName.leader;
 
@@ -96,17 +96,17 @@ class AgentManagerTest {
         StrategyBase expected_l = StrategyX_Leader.getInstance();
         StrategyBase expected_m = StrategyX_Member.getInstance();
 
-        am.vSetStrategy(testStrategyName);
+        sut.vSetStrategy(testStrategyName);
 
         StrategyBase actual_l, actual_m;
 
-        Field fl = am.getClass().getDeclaredField("strategyLeader");
+        Field fl = sut.getClass().getDeclaredField("strategyLeader");
         fl.setAccessible(true);
-        actual_l = (StrategyBase) fl.get(am);
+        actual_l = (StrategyBase) fl.get(sut);
 
-        Field fm = am.getClass().getDeclaredField("strategyMember");
+        Field fm = sut.getClass().getDeclaredField("strategyMember");
         fm.setAccessible(true);
-        actual_m = (StrategyBase) fm.get(am);
+        actual_m = (StrategyBase) fm.get(sut);
 
         assertThat(actual_l, is(expected_l));
         assertThat(actual_m, is(expected_m));
