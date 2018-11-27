@@ -10,14 +10,12 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static root.EnvironmentalConstants.INITIAL_TASK_NUM;
 import static root.EnvironmentalConstants.MAX_TASKQUEUE_SIZE;
 
 class TaskManagerTest {
-    TaskManager sut = TaskManager.getInstance();
-    int initial_task_num_   = INITIAL_TASK_NUM;
-    int taskqueue_size      = MAX_TASKQUEUE_SIZE;
-    Field tq;
+    private TaskManager sut = TaskManager.getInstance();
+    private int taskqueue_size      = MAX_TASKQUEUE_SIZE;
+    private Field tq;
 
     @Nested
     class taskqueue初期化のテスト{
@@ -45,7 +43,6 @@ class TaskManagerTest {
             int expected      = test_task_num;
             int actual;
 
-            sut.vInitiateTaskQueue(test_task_num);
             actual = ((List)tq.get(sut)).size();
 
             assertThat(actual, is(expected));
@@ -61,6 +58,50 @@ class TaskManagerTest {
             actual = ((List)tq.get(sut)).size();
 
             assertThat(actual, is(expected));
+        }
+
+        @AfterEach
+        void tearDown() throws IllegalAccessException {
+            ((List)tq.get(sut)).clear();
+        }
+    }
+
+    @Nested
+    class tPopTaskのテスト{
+        @BeforeEach
+        void setUp() throws NoSuchFieldException {
+            tq = sut.getClass().getDeclaredField("taskQueue");
+            tq.setAccessible(true);
+        }
+
+        @Test
+        void taskqueueが空の時nullを返す(){
+            int test_task_num = 0;
+
+            Task expected = null;
+            Task actual;
+
+            sut.vInitiateTaskQueue(test_task_num);
+            actual = sut.tPopTask();
+
+            assertThat(actual, is(expected));
+        }
+
+        @Test
+        void taskqueueから先頭のタスクを取り出せる() throws IllegalAccessException {
+            int test_task_num = 100;
+
+            sut.vInitiateTaskQueue(test_task_num);
+
+            Task expected = (Task) ((List)tq.get(sut)).get(0);
+            Task actual   = sut.tPopTask();
+
+            assertThat(actual, is(expected));
+
+            int expectedQueueSize = test_task_num -1;
+            int actualQueueSize   = ((List)tq.get(sut)).size();
+
+            assertThat(actualQueueSize, is(expectedQueueSize));
         }
 
         @AfterEach
