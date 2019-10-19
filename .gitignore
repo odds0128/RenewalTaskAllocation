@@ -1,0 +1,8 @@
+*.class
+.DS_Store
+unti
+.idea/
+out/
+libs/
+*.iml
+.gradle
