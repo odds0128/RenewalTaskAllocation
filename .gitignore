@@ -6,3 +6,6 @@ out/
 libs/
 *.iml
 .gradle
+gradle/
+gradlew*
+settings.gradle
