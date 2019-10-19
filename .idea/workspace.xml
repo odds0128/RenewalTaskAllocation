@@ -36,7 +36,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -76,6 +76,7 @@
       <updated>1571499469682</updated>
       <workItem from="1571499471160" duration="2461000" />
       <workItem from="1571502042129" duration="3111000" />
+      <workItem from="1571505190222" duration="2073000" />
     </task>
     <servers />
   </component>
