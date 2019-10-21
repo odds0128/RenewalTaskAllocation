@@ -34,16 +34,16 @@
     }
   },
   "tasks" : {
-    "initial_tasks_num" : 0,
+    "initial_tasks_num" : 10,
     "additional_tasks_num" : 7.5,
     "distribution" : "poisson",
     "task_queue_size" : 500,
     "min_subtasks_num" : 3,
     "max_subtasks_num" : 6,
-    "subtask" : {
-      "resource_types" : 3,
-      "min_request_value" : 5,
-      "max_request_value" : 10
+    "subtasks" : {
+      "resource_types_num" : 3,
+      "min_request_value"  : 5,
+      "max_request_value"  : 10
     }
   },
   "others" : {

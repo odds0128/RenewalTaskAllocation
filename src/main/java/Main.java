@@ -27,7 +27,7 @@ public class Main {
 		for ( String strategyName: strategyNameList ) {
 			ExperimentManager em = new ExperimentManager( jsonNode, strategyName );
 			for ( int i = 0; i < experiment_times_; i++ ) {
-				em.doAnExperiment();
+				em.doAnExperiment( i );
 			}
 			OutputAsFile of = new OutputAsFile();
 //			of.output( "results", strategyName, null, "csv" );
