@@ -40,4 +40,8 @@ public class Agent {
 	public void actAsMember() {
 		ms.actAsMember();
 	}
+
+	public int getId() {
+		return id;
+	}
 }

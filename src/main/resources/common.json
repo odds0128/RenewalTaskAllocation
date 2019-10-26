@@ -11,6 +11,11 @@
     "check_initiation" : false,
     "check_agents" : false
   },
+  "communication" : {
+    "max_delay" : 5,
+    "width" : 51,
+    "height" : 51
+  },
   "agents" : {
     "agents_num" : 30,
     "time_observing_team_formation" : 50,

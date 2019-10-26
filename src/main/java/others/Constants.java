@@ -6,4 +6,16 @@ public interface Constants {
 		LEADER,
 		MEMBER
 	}
+
+	enum ReplyType {
+		ACCEPT ,
+		DECLINE,
+		REJECT_FOR_DOING_YOUR_ST
+	}
+
+	enum ResultType {
+		SUCCESS,
+		FAILURE
+	}
+
 }
